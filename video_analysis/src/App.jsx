@@ -40,7 +40,7 @@ export default function App() {
     setError('');
     
     try {
-      const genAI = new GoogleGenerativeAI("AIzaSyA16GvRnUOfXiOJTtk88HgSIZtvlTobg5A");
+      const genAI = new GoogleGenerativeAI("");
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-05-20" });
       
       const result = await model.generateContent([
