@@ -5,12 +5,14 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import './App.css'; // Assuming you have some custom styles
 
 export default function App() {
+  // Variables for the URL, timestamps, and error handling. 
   const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/embed/xNRJwmlRBNU?si=ptewSZO2p0Mjs45V');
   const [videoId, setVideoId] = useState('xNRJwmlRBNU');
   const [timestamps, setTimestamps] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
+  // Effect to set the initial video URL and ID
   const handleSubmit = (e) => {
     e.preventDefault();
     const inputUrl = e.target.elements.videoInput.value;
@@ -32,12 +34,13 @@ export default function App() {
     }
   };
 
+  // Function to generate timestamps using Google Generative AI
   const generateTimestamps = async () => {
     setLoading(true);
     setError('');
     
     try {
-      const genAI = new GoogleGenerativeAI(""); // Consider using environment variables for API keys
+      const genAI = new GoogleGenerativeAI("AIzaSyA16GvRnUOfXiOJTtk88HgSIZtvlTobg5A");
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-05-20" });
       
       const result = await model.generateContent([
