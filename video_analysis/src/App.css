@@ -10,6 +10,7 @@
     color: #333;
     font-weight: bold;
     z-index: 1000;
+    width: 90%; /* Ensure it doesn't overflow on small screens */
 }
 
 .subtitle {
@@ -21,6 +22,8 @@
     color: black;
     z-index: 1000;
     font-family: Arial, Helvetica, sans-serif;
+    width: 80%; /* Adjust width for responsiveness */
+    text-align: center; /* Center text for better mobile view */
 }
 
 .user-input {
@@ -67,6 +70,8 @@
     transform: translate(-50%, -50%);
     font-size: 30px;
     z-index: 1000;
+    text-align: center; /* Center text */
+    width: 80%; /* Adjust width */
 }
 
 .generate-button {
@@ -117,4 +122,191 @@
     max-height: 300px;
     overflow-y: auto;
     min-height: 50px;
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 992px) {
+    .title {
+        font-size: 30px;
+        top: 5%;
+    }
+
+    .subtitle {
+        top: 15%;
+        left: 50%;
+        width: 80%;
+        font-size: 16px;
+    }
+
+    .user-input {
+        top: 22%;
+        left: 50%;
+        width: 40%;
+    }
+
+    .load-button {
+        top: 28%;
+        left: 50%;
+    }
+
+    .subtitle-timestamps {
+        top: 35%; /* Adjusted to be below load button */
+        left: 50%;
+        font-size: 24px;
+        width: 80%;
+    }
+
+    .generate-button {
+        top: 42%; /* Adjusted */
+        left: 50%;
+    }
+    
+    .alert-info {
+        top: 50%; /* Adjusted */
+        left: 50%;
+        width: 60%;
+        font-size: 14px;
+    }
+
+    .list-unstyled {
+        top: 70%; /* Adjusted to be below alert */
+        left: 50%;
+        width: 80%;
+        height: 30%;
+        font-size: 16px;
+    }
+
+    .embed-responsive-item {
+        top: 60%; /* Default, will be overridden by more specific below */
+        left: 50%;
+        width: 80%;
+        height: auto; /* Maintain aspect ratio */
+        padding-bottom: 45%; /* Aspect ratio for 16:9, adjust as needed */
+    }
+}
+
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 767px) {
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 60px; /* Space for fixed title */
+    }
+    
+    .title {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        font-size: 24px;
+        background-color: white;
+        padding: 10px 0;
+        margin: 0;
+        z-index: 1001;
+    }
+
+    /* Create a container layout for mobile */
+    .subtitle, .user-input, .load-button, .subtitle-timestamps, .generate-button, .alert-info, .list-unstyled, .embed-responsive-item {
+        position: static; /* Remove positioning */
+        transform: none;
+        width: 90%;
+        margin: 10px auto;
+        text-align: center;
+        display: block;
+        left: auto;
+        top: auto;
+    }
+
+    .subtitle {
+        font-size: 16px;
+        margin-top: 20px;
+        order: 1;
+    }
+
+    .user-input {
+        width: 80%;
+        font-size: 14px;
+        order: 2;
+    }
+
+    .load-button {
+        font-size: 14px;
+        padding: 8px 16px;
+        order: 3;
+    }
+    
+    .subtitle-timestamps {
+        font-size: 20px;
+        margin-top: 30px;
+        order: 4;
+    }
+
+    .generate-button {
+        font-size: 15px;
+        order: 5;
+    }
+
+    .alert-info {
+        font-size: 13px;
+        padding: 10px;
+        width: 90%;
+        order: 6;
+    }
+
+    .list-unstyled {
+        font-size: 14px;
+        height: 200px;
+        max-height: 200px;
+        width: 90%;
+        order: 7;
+    }
+    
+    .embed-responsive-item {
+        width: 90%;
+        height: 0;
+        padding-bottom: 50.25%; /* 16:9 Aspect Ratio */
+        margin: 30px auto;
+        position: relative;
+        order: 8;
+    }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575px) {
+    .title {
+        font-size: 20px;
+        top: 2%;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+    
+    .user-input {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .load-button {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
+    .subtitle-timestamps {
+        font-size: 18px;
+    }
+
+    .generate-button {
+        font-size: 14px;
+    }
+
+    .alert-info {
+        font-size: 12px;
+    }
+
+    .list-unstyled {
+        font-size: 13px;
+    }
 }
