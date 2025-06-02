@@ -45,7 +45,7 @@ export default function App() {
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-05-20" });
       
       const result = await model.generateContent([
-        "Please create time-stamps for the different topics in the video. Make sure its in the format of 00:00 - title.",
+        "Please create time-stamps for the given video. Make sure its in the format of 00:00 - title.",
         {
           fileData: {
             fileUri: `https://www.youtube.com/watch?v=${videoId}`,
