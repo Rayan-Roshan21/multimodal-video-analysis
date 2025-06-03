@@ -42,7 +42,7 @@ export default function App() {
     try {
       const apiKey = import.meta.env.VITE_API_KEY;
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-Pro-preview-05-06" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-05-06" });
       
       const result = await model.generateContent([
         "Please create time-stamps for the given video. Make sure its in the format of 00:00 - title.",
