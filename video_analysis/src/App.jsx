@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Form, Button, Spinner } from 'react-bootstrap';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import './App.css'; // Assuming you have some custom styles
+import { YoutubeTranscript } from 'youtube-transcript';
 
 export default function App() {
   // Variables for the URL, timestamps, and error handling. 
@@ -48,10 +49,7 @@ export default function App() {
       let transcript = [];
       let transcriptText = '';
       try {
-        const response = await fetch(`/api/transcript?videoId=${videoId}`);
-        if (!response.ok) throw new Error('Failed to fetch transcript');
-        const data = await response.json();
-        transcript = data.transcript;
+        transcript = await YoutubeTranscript.fetchTranscript(videoId);
         transcriptText = transcript.map(t => t.text).join(' ');
       } catch (transcriptError) {
         console.error('Transcript fetch error:', transcriptError);
