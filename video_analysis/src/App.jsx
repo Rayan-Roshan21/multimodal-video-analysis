@@ -42,7 +42,7 @@ export default function App() {
     try {
       const apiKey = import.meta.env.VITE_API_KEY;
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-05-20" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
       
       // First fetch the transcript
       let transcript = [];
@@ -59,12 +59,12 @@ export default function App() {
       }
 
       // Now send both the video URL and transcript to Gemini
-      const prompt = `Here is a video transcript:\n${transcriptText}\n\nPlease generate timestamps in the format 00:00 - Title.`;
+      const prompt = `Here is a video transcript:\n${transcriptText}\n\nPlease generate timestamps of key topics of the video from start to finish, in the format 00:00 - Title. Be very precise with the timestamps.`;
       const result = await model.generateContent([
         prompt,
         {
           fileData: {
-        fileUri: `https://www.youtube.com/watch?v=${videoId}`,
+            fileUri: `https://www.youtube.com/watch?v=${videoId}`,
           },
         }
       ]);
