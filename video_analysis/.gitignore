@@ -13,7 +13,7 @@ dist-ssr
 *.local
 
 #API keys and secrets
-.env
+.env*
 
 # Editor directories and files
 .vscode/*
