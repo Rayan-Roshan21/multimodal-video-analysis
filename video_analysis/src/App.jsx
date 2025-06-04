@@ -42,15 +42,31 @@ export default function App() {
     try {
       const apiKey = import.meta.env.VITE_API_KEY;
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-05-06" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-05-20" });
       
+      // First fetch the transcript
+      let transcript = [];
+      let transcriptText = '';
+      try {
+        const response = await fetch(`/api/transcript?videoId=${videoId}`);
+        if (!response.ok) throw new Error('Failed to fetch transcript');
+        const data = await response.json();
+        transcript = data.transcript;
+        transcriptText = transcript.map(t => t.text).join(' ');
+      } catch (transcriptError) {
+        console.error('Transcript fetch error:', transcriptError);
+        // Continue with empty transcript - Gemini will still try to analyze the video
+      }
+
+      // Now send both the video URL and transcript to Gemini
+      const prompt = `Here is a video transcript:\n${transcriptText}\n\nPlease generate timestamps in the format 00:00 - Title.`;
       const result = await model.generateContent([
-        "Please create time-stamps for the given video. Make sure its in the format of 00:00 - title.",
+        prompt,
         {
           fileData: {
-            fileUri: `https://www.youtube.com/watch?v=${videoId}`,
+        fileUri: `https://www.youtube.com/watch?v=${videoId}`,
           },
-        },
+        }
       ]);
 
       const text = result.response.text();
@@ -95,12 +111,35 @@ export default function App() {
 
       setTimestamps(processedTimestamps);
     } catch (err) {
-      setError('Failed to generate timestamps. Please try again later.');
+      setError(err.message || 'Failed to generate timestamps. Please try again later.');
       console.error('Error generating timestamps:', err);
     } finally {
       setLoading(false);
     }
   };
+
+  // State to track elapsed seconds
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+
+  // Effect to track time during loading
+  useEffect(() => {
+    let timer;
+    if (loading) {
+      setElapsedSeconds(0);
+      timer = setInterval(() => {
+        setElapsedSeconds(prev => prev + 1);
+      }, 1000);
+    }
+    
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [loading]);
+
+  // Effect to clear the timer when a new video is loaded
+  useEffect(() => {
+    setElapsedSeconds(0);
+  }, [videoId]);
 
   return (
     <>
@@ -140,19 +179,25 @@ export default function App() {
         <Row className="justify-content-center mt-4">
           <Col md={8}>
             <h3 className='subtitle-timestamps'>Video Timestamps</h3>
-            <Button
-              variant="success"
-              onClick={generateTimestamps}
-              disabled={loading}
-              className="generate-button"
-            >
-              {loading ? (
-                <>
-                  <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-                  <span className="ms-2">Generating...</span>
-                </>
-              ) : "Generate Timestamps"}
-            </Button>
+            <div className="d-flex align-items-center justify-content-center gap-2">
+              <Button
+                variant="success"
+                onClick={generateTimestamps}
+                disabled={loading}
+                className="generate-button"
+              >
+                {loading ? (
+                  <>
+                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                    <span className="ms-2">Generating...</span>
+                  </>
+                ) : "Generate Timestamps"}
+              </Button>
+              
+              <span className="small-timer bg-light px-2 py-1 rounded text-muted">
+                {elapsedSeconds > 0 ? `⏱️ ${elapsedSeconds}s` : "⏱️"}
+              </span>
+            </div>
 
             {error && <div className="alert alert-danger">{error}</div>}
 
