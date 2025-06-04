@@ -177,7 +177,7 @@ export default function App() {
         <Row className="justify-content-center mt-4">
           <Col md={8}>
             <h3 className='subtitle-timestamps'>Video Timestamps</h3>
-            <div className="d-flex align-items-center justify-content-center gap-2">
+            <div className="d-flex align-items-center justify-content-center">
               <Button
                 variant="success"
                 onClick={generateTimestamps}
@@ -187,14 +187,10 @@ export default function App() {
                 {loading ? (
                   <>
                     <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-                    <span className="ms-2">Generating...</span>
+                    <span className="ms-2">Generating... {elapsedSeconds > 0 ? `(${elapsedSeconds}s)` : ""}</span>
                   </>
                 ) : "Generate Timestamps"}
               </Button>
-              
-              <span className="small-timer bg-light px-2 py-1 rounded text-muted">
-                {elapsedSeconds > 0 ? `⏱️ ${elapsedSeconds}s` : "⏱️"}
-              </span>
             </div>
 
             {error && <div className="alert alert-danger">{error}</div>}
